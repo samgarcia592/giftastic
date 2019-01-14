@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GIF GIF HOORAY!!
+  </title>
+</head>
+
+<body>
+  
+  
+  
+  <div id="buttons"> 
+  </div>
+
+
+  <div id="gifs-appear-here">
+  </div>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+  var topics = ["hey arnold", "rocket power", "catdog", "the simpsons", "rugrats"]; 
+
+//function to create buttons on page// 
+  function createButtons() {
+    for (i=0; i<topics.length; i++) {
+      var gifBtn = $("<button>"); 
+        gifBtn.text(topics[i]); 
+        $("#buttons").append(gifBtn); 
+        gifBtn.attr("data-name", topics[i]);
+        gifBtn.addClass("topics"); 
+    }
+  }
+
+  createButtons();
+  
+//-------------------------------------------------//
+
+  $("button").on("click", function() {
+    $("#gifs-appear-here").empty();
+
+      var show = $(this).attr("data-name");
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        show + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        .then(function(response) {
+          var results = response.data;
+          console.log(response); 
+
+          for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div>");
+            var rating = results[i].rating;
+            var p = $("<p>").text("Rating: " + rating);
+            var showImage = $("<img>");
+            showImage.attr("src", results[i].images.fixed_height_still.url);
+
+            gifDiv.append(p);
+            gifDiv.append(showImage);
+            $("#gifs-appear-here").append(gifDiv);
+
+          }
+  
+    // $("img").on("click", function() {
+
+
+    // //   var state = $(this).attr("data-state"); 
+
+    // //   if (state === "still"){
+    // //     $(this).attr("src", $(this).attr("data-animate")); 
+    // //     $(this).attr("data-state", "animate"); 
+    // //     }
+
+    // //   else{
+    // //     $(this).attr("src", $(this).attr("data-still")); 
+    // //     $(this).attr("data-state", "still"); 
+    // //     }
+    // });
+
+  
+});
+});
+
+  </script>
+</body>
+
+</html>
+  
